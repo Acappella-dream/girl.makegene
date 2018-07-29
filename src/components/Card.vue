@@ -32,13 +32,13 @@
           <br/>
           <div class="buy-btn" v-if="this.$store.state.login && this.$store.state.operate==0">
             <el-row gutter="50px">
-              <el-col :span="12" style="padding-top: 10px;"><label>0.01eos</label></el-col>
+              <el-col :span="12" style="padding-top: 10px;"><label>{{price}}</label></el-col>
               <el-col :span="12"><el-button type="primary" @click="buyCard">Buy Now</el-button></el-col>
             </el-row>
           </div>
           <div class="sale-btn" v-if="this.$store.state.login && this.$store.state.operate==1">
             <el-row gutter="50px">
-              <el-col :span="12" style="padding-top: 10px;"><label>0.01eos</label></el-col>
+              <el-col :span="12" style="padding-top: 10px;"><label>{{price}}</label></el-col>
               <el-col :span="12"><el-button type="primary" @click="saleCard">Sale Now</el-button></el-col>
             </el-row>
           </div>
@@ -47,38 +47,55 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: 'Card',
     data(){
       return {
         name:"Sakura",
         id:"f32a676c",
-        owner:"girlmakegene",
+        owner:"testtest1111",
         gene:require("../assets/code.jpg"),
         eye:"#666",
         hair:"#666",
         mouth:"#666",
         father:"f3673792a389a",
         mother:"7d643a92a676c",
+        price:"0.1000 DEV"
       }
     },
     created(){
-      console.log(this.$route.query.id);
+      
     },
     methods:{
       buyCard(){
-        this.$alert('购买成功', '提示', {
-          confirmButtonText: '确定',
-          callback: action => {
-            this.$message({
-              type: 'info',
-              message: `action: ${ action }`
+            this.$store.state.amount-=this.price;
+            this.owner=this.$store.state.account;
+            this.$store.state.cards.push({
+              name:this.name,
+              id:this.id,
+              owner:this.owner,
+              gene:this.gene,
+              eye:this.eye,
+              hair:this.hair,
+              mouth:this.mouth,
+              father:this.father,
+              mother:this.mother,
+              price:this.price
+            })
+            this.$alert('购买成功', '提示', {
+              confirmButtonText: '确定',
+              callback: action => {
+                this.$message({
+                  type: 'info',
+                  message: `action: ${ action }`
+                });
+              }
             });
-          }
-        });
       },
       saleCard(){
-        this.$alert('开始销售', '提示', {
+        this.$alert('确认将角色出售', '提示', {
           confirmButtonText: '确定',
           callback: action => {
             this.$message({

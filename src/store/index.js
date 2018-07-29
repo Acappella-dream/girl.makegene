@@ -5,12 +5,11 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
-  passwd:null,
   account:null,
-  amount:null,
+  amount:0,
   login:false,
   operate:0,
-  EOS:null
+  cards:[]
 }
 
 export default new Vuex.Store({

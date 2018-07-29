@@ -86,6 +86,7 @@
   import ElButton from "../../node_modules/element-ui/packages/button/src/button.vue";
   import ElRow from "element-ui/packages/row/src/row";
   import ElCol from "element-ui/packages/col/src/col";
+  import axios from 'axios'
 
   export default {
     components: {

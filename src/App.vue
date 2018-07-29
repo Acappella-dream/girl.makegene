@@ -23,9 +23,6 @@
         <el-form-item label="Account" :label-width="formLabelWidth">
           <el-input v-model="form.account" auto-complete="off"></el-input>
         </el-form-item>
-        <el-form-item label="Password" :label-width="formLabelWidth">
-          <el-input v-model="form.password" auto-complete="off"></el-input>
-        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -39,37 +36,48 @@
 <script>
 import ElHeader from "../node_modules/element-ui/packages/header/src/main.vue";
 import ElContainer from "../node_modules/element-ui/packages/container/src/main.vue";
-import Eos from './utils/getEos'
-
+import axios from 'axios'
 export default {
   components: {
     ElContainer,
-    ElHeader},
+    ElHeader
+  },
   name: 'App',
   data(){
     return {
       activeIndex:'home',
       form:{
-        account:null,
-        passwd:null
+        account:null
       },
       dialogFormVisible:false
     }
-  },
-  created(){
-    this.$store.state.eos=Eos
   },
   methods:{
     toSignIn(){
       this.dialogFormVisible=true;
     },
     signIn(){
-      
-      this.dialogFormVisible=false;
-      this.$store.state.login=true;
-      this.$store.state.account=this.form.account;
-      this.$store.state.passwd=this.form.passwd;
-      this.$router.push({path:"/user"})
+      axios.post("/api/eos/login",
+        {
+          account:this.form.account
+        }).then(result=>{
+        this.dialogFormVisible=false;
+        this.$store.state.login=true;
+        this.$store.state.account=this.form.account;
+        this.$router.push({path:"/user"})
+      }).catch((err)=>{
+        console.log(err)
+        this.dialogFormVisible=false;
+        this.$alert('账号不存在', '提示', {
+          confirmButtonText: '确定',
+          callback: action => {
+            this.$message({
+              type: 'info',
+              message: `action: ${ action }`
+            });
+          }
+        });
+      })
     }
   }
 }

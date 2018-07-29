@@ -1,5 +1,7 @@
 <template>
   <div class="market" >
+
+    <h3>For Sale</h3>
     <el-row :gutter="50" v-for="i in 4" style="margin-bottom:30px;">
       <el-col :span="6" v-for="i in 4">
         <div class="grid-content bg-purple card" @click="toCard()">
@@ -30,7 +32,8 @@
     },
     methods:{
       toCard(){
-        this.$router.push({path:'/card',query:{id:this.cardId,op:0}})
+        this.$store.state.operate=0;
+        this.$router.push({path:'/card',query:{id:this.cardId}})
       }
     }
   }
